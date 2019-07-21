@@ -85,8 +85,6 @@ bool Object3D::LoadModel()
 		for (const auto& index : shape.mesh.indices) {
 			PackedVertex vertex = {};
 			
-			indices.push_back(indices.size());
-
 			vertex.pos = {
 				attrib.vertices[3 * index.vertex_index + 0],
 				attrib.vertices[3 * index.vertex_index + 1],
@@ -95,7 +93,7 @@ bool Object3D::LoadModel()
 
 			vertex.uv = {
 				attrib.texcoords[2 * index.texcoord_index + 0],
-				1.0f - attrib.texcoords[2 * index.texcoord_index + 1]
+				-attrib.texcoords[2 * index.texcoord_index + 1]
 			};
 
 			vertex.normal = {
@@ -105,15 +103,15 @@ bool Object3D::LoadModel()
 			};
 
 
-			//if (uniqueVertices.count(vertex) == 0) {
-			//	uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
+			if (uniqueVertices.count(vertex) == 0) {
+				uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
 
 				vertices.push_back(vertex.pos);
 				uvs.push_back(vertex.uv);
 				normals.push_back(vertex.normal);
-			//}
+			}
 
-			//indices.push_back(uniqueVertices[vertex]);
+			indices.push_back(uniqueVertices[vertex]);
 		}
 	}
 }
@@ -133,10 +131,10 @@ void Object3D::InitBuffers()
 	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
 	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(vec3), &normals[0], GL_STATIC_DRAW);*/
 
-	//// Element buffer for VBO indexing
-	//glGenBuffers(1, &elementBuffer);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
+	// Element buffer for VBO indexing
+	glGenBuffers(1, &elementBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
 }
 
 bool Object3D::InitShaders()
@@ -220,10 +218,15 @@ void Object3D::Draw()
 	);
 
 	// Index buffer
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
 
-	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+	// Draw the triangles !
+	glDrawElements(
+		GL_TRIANGLES,      // mode
+		indices.size(),    // count
+		GL_UNSIGNED_INT,   // type - PROBABLY UNSAFE, but this method doesnt support proper 4 byte types
+		(void*)0           // element array buffer offset
+	);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
