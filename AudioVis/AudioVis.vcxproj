@@ -88,10 +88,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>External\OpenGl\glew-2.1.0-win32\glew-2.1.0\include;External\SFML-2.5.1\include;External\OpenGl\glm-0.9.9.5\glm;External\OpenGl\glfw-3.3.bin.WIN32\glfw-3.3.bin.WIN32\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>External\OpenGl\glew-2.1.0-win32\glew-2.1.0\include;External\SFML-2.5.1\include;External\OpenGl\glm-0.9.9.5\glm;External\OpenGl\glfw-3.3.bin.WIN32\glfw-3.3.bin.WIN32\include;External\tiny_obj_loader</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,10 +106,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>External\OpenGl\glew-2.1.0-win32\glew-2.1.0\include;External\SFML-2.5.1\include;External\OpenGl\glm-0.9.9.5\glm;External\OpenGl\glfw-3.3.bin.WIN32\glfw-3.3.bin.WIN32\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>External\OpenGl\glew-2.1.0-win32\glew-2.1.0\include;External\SFML-2.5.1\include;External\OpenGl\glm-0.9.9.5\glm;External\OpenGl\glfw-3.3.bin.WIN32\glfw-3.3.bin.WIN32\include;External\tiny_obj_loader</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,10 +126,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>External\OpenGl\glew-2.1.0-win32\glew-2.1.0\include;External\SFML-2.5.1\include;External\OpenGl\glm-0.9.9.5\glm;External\OpenGl\glfw-3.3.bin.WIN32\glfw-3.3.bin.WIN32\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>External\OpenGl\glew-2.1.0-win32\glew-2.1.0\include;External\SFML-2.5.1\include;External\OpenGl\glm-0.9.9.5\glm;External\OpenGl\glfw-3.3.bin.WIN32\glfw-3.3.bin.WIN32\include;External\tiny_obj_loader</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,10 +148,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>External\OpenGl\glew-2.1.0-win32\glew-2.1.0\include;External\SFML-2.5.1\include;External\OpenGl\glm-0.9.9.5\glm;External\OpenGl\glfw-3.3.bin.WIN32\glfw-3.3.bin.WIN32\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>External\OpenGl\glew-2.1.0-win32\glew-2.1.0\include;External\SFML-2.5.1\include;External\OpenGl\glm-0.9.9.5\glm;External\OpenGl\glfw-3.3.bin.WIN32\glfw-3.3.bin.WIN32\include;External\tiny_obj_loader</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,18 +165,24 @@
   <ItemGroup>
     <ClInclude Include="AudioObject.h" />
     <ClInclude Include="AudioVis.h" />
+    <ClInclude Include="Object3D.h" />
     <ClInclude Include="Shader.hpp" />
+    <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Visualizer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioObject.cpp" />
     <ClCompile Include="AudioVis.cpp" />
+    <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Visualizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleFragmentShader.fragmentshader" />
     <None Include="Shaders\SimpleVertexShader.vertexshader" />
+    <None Include="Shaders\TextureFragmentShader.fragmentshader" />
+    <None Include="Shaders\TransformVertexShader.vertexshader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

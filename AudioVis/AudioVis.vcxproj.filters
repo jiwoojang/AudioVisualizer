@@ -26,6 +26,12 @@
     <ClInclude Include="Shader.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Object3D.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioVis.cpp">
@@ -40,12 +46,24 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Object3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleFragmentShader.fragmentshader">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\SimpleVertexShader.vertexshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\TextureFragmentShader.fragmentshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\TransformVertexShader.vertexshader">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

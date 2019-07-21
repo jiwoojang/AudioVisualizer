@@ -134,12 +134,14 @@ void AudioObject::Update()
 	drawingPoints.setPrimitiveType(Lines);
 	Vector2f position(150, 500);
 
-	float max = 1000000;
+	float max = 1;
 
-	for (float i(3); i < min(sampleBufferSize / 2.f, 20000.f); i *= 1.05)
+	for (float i(3); i < min(sampleBufferSize / 2.f, 20000.f); i *= 1.2)
 	{
 		Vector2f samplePosition(log(i) / log(min(sampleBufferSize / 2.f, 20000.f)), abs(data[(int)i]));
-		drawingPoints.append(Vertex(position + Vector2f(samplePosition.x * 500, -samplePosition.y / max * 700), Color::White));
+		float y = (-20 * log(samplePosition.y / max)) < 0 ? -20 * log(samplePosition.y / max) : 0;
+
+		drawingPoints.append(Vertex(position + Vector2f(samplePosition.x * 500, y), Color::White));
 		drawingPoints.append(Vertex(position + Vector2f(samplePosition.x * 500, 0), Color::White));
 	}
 #endif // DEBUG_DRAW

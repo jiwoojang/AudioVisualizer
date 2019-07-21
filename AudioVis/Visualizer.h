@@ -1,21 +1,22 @@
 #pragma once
 
 #define _USE_MATH_DEFINES
-#define GLFW_DLL
+
+#ifndef GLFW_DLL
+	#define GLFW_DLL
+#endif
+
 #include "AudioVis.h"
-#include "Shader.hpp"
+#include "Object3D.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <chrono>	// For high_resolution_clock
 
-#include <GL/glew.h>
+#include "GL/glew.h"
 
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>	// For matrix transformation functions
-#include <glm/gtx/transform.hpp>	// For rotation matrix
+#include "glm/glm.hpp"
 
 using namespace std;
 using namespace glm;
@@ -41,17 +42,15 @@ private:
 
 	bool InitWindow();
 	void InitVAO();
-	void InitBuffers();
-	void InitShaders();
 
 	void Teardown();
 
 	GLFWwindow* window;
 
-	GLuint vertexBuffer;
 	GLuint vertexArrayID;
-	GLuint shaderId;
 
 	int windowWidth		{ 0 };
 	int windowHeight	{ 0 };
+
+	Object3D object;
 };
