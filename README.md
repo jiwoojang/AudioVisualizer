@@ -4,7 +4,13 @@ An FFT based audio visualizer built with C++ and OpenGL
 ## Goals
 This project was meant to be my first forray into graphics programming and also audio file processing. 
 
-The architecture is pretty short and sweet. One object holds and initializes audio data from a .wav file. I sample this file at regular intervals and perform a FFT on the samples. This gives me logarithmic frequency data to feed to the OpenGL rendere object. This object then manipulates the patters of the data and passes the final numbers onto the shader for rendering.
+The architecture is pretty short and sweet. One object holds and initializes audio data from a .wav file. I sample this file at regular intervals and perform a FFT on the samples. This gives me logarithmic frequency data to feed to the OpenGL rendere object. This object then manipulates the patters of the data and passes the final numbers onto the shader for rendering.'
+
+If you would like to see the debug output for just the FFT, uncomment the `#define DEBUG_DRAW` in `AudioVis.h` to see an FFT of your .wav similar to the one below: 
+
+<p align="center">
+  <img width="500" height="300" src="https://i.gyazo.com/6ddf6cf03bc4b7c850b2400d75759f9d.gif">
+</p>
 
 ## Building
 
