@@ -29,6 +29,8 @@ public:
 	void PlaySound();
 	bool IsPlaying();
 
+	const vector<float>& GetOutputBuckets() const { return outputBuckets; }
+
 #ifdef DEBUG_DRAW
 	VertexArray			drawingPoints;
 #endif // DEBUG_DRAW
@@ -44,6 +46,7 @@ private:
 	//--------------------------------------------------------------
 	Sound		sound;
 	SoundBuffer buffer;
+	string		filePath;
 
 	//--------------------------------------------------------------
 	// For FFT and windowing functions
@@ -52,7 +55,13 @@ private:
 	vector<complexVal>	samples;
 	complexArray		data;
 
-	string filePath;
+	//--------------------------------------------------------------
+	// For post FFT processing
+	//--------------------------------------------------------------
+	vector<float>	outputBuckets;
+	float			maxSampleIndex { 20000.0f };
+	double			rawBucketMultiplier { 1.05f };
+	int				rawBucketsPerOutput { 0 };
 
 	int sampleRate; 
 	int sampleCount;

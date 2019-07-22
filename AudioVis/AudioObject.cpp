@@ -28,6 +28,12 @@ bool AudioObject::Init()
 
 	samples.resize(sampleBufferSize);
 
+	maxSampleIndex = min(sampleBufferSize / 2.f, 20000.f);
+
+	rawBucketMultiplier = pow(10, log10(BUFFER_SIZE / 2) / (double)RAW_BUCKET_COUNT);
+
+	rawBucketsPerOutput = RAW_BUCKET_COUNT / OUTPUT_BUCKET_COUNT;
+
 	return true;
 }
 
@@ -128,17 +134,42 @@ void AudioObject::Update()
 	data = complexArray(samples.data(), sampleBufferSize);
 	fft(data);
 
+	// Clear and reserve the number of output buckets we will need 
+	// Probably wont impact perf, but good habits don't hurt
+	outputBuckets.clear();
+	outputBuckets.reserve(OUTPUT_BUCKET_COUNT);
+
+	int bucketCount = 1;
+	double outputBucketAverage = 0;
+
+	for (double i(1); i <= maxSampleIndex; i *= rawBucketMultiplier)
+	{
+		// Add every raw bucket value into the total average for the current output bucket
+		outputBucketAverage += log10(abs(data[(int)i]));
+		++bucketCount;
+
+		// If we have counted enough raw buckets for a single output bucket
+		if (bucketCount % rawBucketsPerOutput == 0)
+		{
+			// Average and push back
+			outputBuckets.push_back(outputBucketAverage / rawBucketsPerOutput);
+
+			// Reset counters
+			outputBucketAverage = 0;
+		}
+	}
+
 #ifdef DEBUG_DRAW
 	drawingPoints.clear();
 
 	drawingPoints.setPrimitiveType(Lines);
-	Vector2f position(150, 500);
+	Vector2f position(150, 500); 
 
 	float max = 1;
 
-	for (float i(3); i < min(sampleBufferSize / 2.f, 20000.f); i *= 1.2)
+	for (float i(1); i < maxSampleIndex; i *= 1.05)
 	{
-		Vector2f samplePosition(log(i) / log(min(sampleBufferSize / 2.f, 20000.f)), abs(data[(int)i]));
+		Vector2f samplePosition(log(i) / log(maxSampleIndex), abs(data[(int)i]));
 		float y = (-20 * log(samplePosition.y / max)) < 0 ? -20 * log(samplePosition.y / max) : 0;
 
 		drawingPoints.append(Vertex(position + Vector2f(samplePosition.x * 500, y), Color::White));

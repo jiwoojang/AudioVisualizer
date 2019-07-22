@@ -8,6 +8,7 @@ Visualizer::Visualizer(int width, int height)
 	,windowWidth(width)
 	, windowHeight(height)
 {
+	lastTimeStamp = high_resolution_clock::now();
 }
 
 Visualizer::~Visualizer()
@@ -112,14 +113,20 @@ void Visualizer::InitVAO()
 }
 
 
-void Visualizer::Update()
+void Visualizer::Update(const AudioObject& audioObject)
 {
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	object.Draw();
+	object.Draw(audioObject, *this);
 
 	// Swap buffers
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+
+	auto end = high_resolution_clock::now();
+	auto duration = lastTimeStamp - end;
+
+	auto durationInNanoS = duration_cast<nanoseconds>(duration).count();
+	deltaTime = durationInNanoS / 1000000000.0f;
 }

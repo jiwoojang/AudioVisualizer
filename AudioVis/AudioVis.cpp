@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	cout << "Please include the.wav extension" << endl;
 	cin  >> wavPath;
 
-	AudioObject audio("Resources/" + wavPath, 16384);
+	AudioObject audio("Resources/" + wavPath, BUFFER_SIZE);
 
 	if (audio.Init())
 	{
@@ -54,7 +54,9 @@ int main(int argc, char *argv[])
 	// Just play audio if not debugging
 	while (audio.IsPlaying())
 	{
-		visualizer.Update();
+		audio.Update();
+
+		visualizer.Update(audio);
 	}
 #endif // DEBUG_DRAW
 	return 0;

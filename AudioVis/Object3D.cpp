@@ -1,12 +1,16 @@
 #include "Object3D.h"
 #include "Shader.hpp"
 #include "Texture.hpp"
+#include "AudioObject.h"
+#include "Visualizer.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
+#include <glm/gtx/transform.hpp> // For rotation matrix
+#include <glm/gtc/matrix_transform.hpp>	// For matrix transformation functions
 
 #include <unordered_map>
 
@@ -165,7 +169,7 @@ bool Object3D::InitTextures()
 	return false;
 }
 
-void Object3D::Draw()
+void Object3D::Draw(const AudioObject& audioObject, const Visualizer& visualizer)
 {
 	// Use our shader
 	glUseProgram(shader);
@@ -174,14 +178,30 @@ void Object3D::Draw()
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(
-		glm::vec3(4, 3, 3), // Camera is at (4,3,3), in World Space
+		glm::vec3(0, 0, 6), // Camera is at (4,3,3), in World Space
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
+
 	// Model matrix : an identity matrix (model will be at the origin)
 	glm::mat4 Model = glm::mat4(1.0f);
+
+	// Scale based on BASS!
+	GLfloat scalefactor = *(audioObject.GetOutputBuckets().begin()) / 2.0f;
+	Model *= scale(vec3(scalefactor, scalefactor, scalefactor));
+
+	// Just rotate in place for now
+	Model *= rotate((GLfloat)(ROTATION_SPEED * visualizer.GetDeltaTime()), vec3(0, 1.0f, 0));
+
 	// Our ModelViewProjection : multiplication of our 3 matrices
 	glm::mat4 MVP = Projection * View * Model; // Remember, matrix multiplication is the other way around
+
+	// Make some funky background colors based on trebbles, mids and highs!
+	glClearColor(
+		(audioObject.GetOutputBuckets()[1]) / 5.0f,
+		(audioObject.GetOutputBuckets()[2]) / 5.0f,
+		(audioObject.GetOutputBuckets()[3]) / 5.0f,
+		0.0f);
 
 	// Send our transformation to the currently bound shader, 
 	// in the "MVP" uniform
@@ -209,12 +229,12 @@ void Object3D::Draw()
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
 	glVertexAttribPointer(
-		1,                                // attribute
-		2,                                // size
-		GL_FLOAT,                         // type
-		GL_FALSE,                         // normalized?
-		0,                                // stride
-		(void*)0                          // array buffer offset
+		1,
+		2,
+		GL_FLOAT,
+		GL_FALSE,
+		0,
+		(void*)0
 	);
 
 	// Index buffer

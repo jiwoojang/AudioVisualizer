@@ -18,9 +18,18 @@
 using namespace std;
 using namespace glm;
 
+class AudioObject;
+class Visualizer;
+
+//==============================================================
+// A class that loads and renders a single obj object
+//==============================================================
 class Object3D
 {
 public:
+	//--------------------------------------------------------------
+	// Struct for fast hashing for VBO indexing
+	//--------------------------------------------------------------
 	struct PackedVertex
 	{
 		vec3 pos;
@@ -37,7 +46,7 @@ public:
 	~Object3D();
 
 	bool Init();
-	void Draw();
+	void Draw(const AudioObject& audioObject, const Visualizer& visualizer);
 
 private:
 
@@ -46,11 +55,15 @@ private:
 	bool InitShaders();
 	bool InitTextures();
 
-	// Files
+	//--------------------------------------------------------------
+	// File related
+	//--------------------------------------------------------------
 	string filePath;
 	string texturePath;
 
-	// Buffer IDs
+	//--------------------------------------------------------------
+	// Various OpenGL buffer IDs
+	//--------------------------------------------------------------
 	GLuint vertexBuffer;
 	GLuint uvBuffer;
 	GLuint normalBuffer;
@@ -60,9 +73,11 @@ private:
 	GLuint textureID;
 	GLuint matrixID;
 
-	// Object data
-	vector<vec3> vertices;
-	vector<vec2> uvs;
-	vector<vec3> normals;
-	vector<uint32_t> indices;
+	//--------------------------------------------------------------
+	// Vertex data for the obj
+	//--------------------------------------------------------------
+	vector<vec3>		vertices;
+	vector<vec2>		uvs;
+	vector<vec3>		normals;
+	vector<uint32_t>	indices;
 };
