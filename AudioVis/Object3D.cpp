@@ -89,23 +89,31 @@ bool Object3D::LoadModel()
 		for (const auto& index : shape.mesh.indices) {
 			PackedVertex vertex = {};
 			
-			vertex.pos = {
-				attrib.vertices[3 * index.vertex_index + 0],
-				attrib.vertices[3 * index.vertex_index + 1],
-				attrib.vertices[3 * index.vertex_index + 2]
-			};
+			if (index.vertex_index >= 0)
+			{
+				vertex.pos = {
+					attrib.vertices[3 * index.vertex_index + 0],
+					attrib.vertices[3 * index.vertex_index + 1],
+					attrib.vertices[3 * index.vertex_index + 2]
+				};
+			}
 
-			vertex.uv = {
-				attrib.texcoords[2 * index.texcoord_index + 0],
-				-attrib.texcoords[2 * index.texcoord_index + 1]
-			};
+			if (index.texcoord_index >= 0)
+			{
+				vertex.uv = {
+					attrib.texcoords[2 * index.texcoord_index + 0],
+					-attrib.texcoords[2 * index.texcoord_index + 1]
+				};
+			}
 
-			vertex.normal = {
-				attrib.normals[3 * index.normal_index + 0],
-				attrib.normals[3 * index.normal_index + 1],
-				attrib.normals[3 * index.normal_index + 2]
-			};
-
+			if (index.normal_index >= 0)
+			{
+				vertex.normal = {
+					attrib.normals[3 * index.normal_index + 0],
+					attrib.normals[3 * index.normal_index + 1],
+					attrib.normals[3 * index.normal_index + 2]
+				};
+			}
 
 			if (uniqueVertices.count(vertex) == 0) {
 				uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
@@ -118,6 +126,8 @@ bool Object3D::LoadModel()
 			indices.push_back(uniqueVertices[vertex]);
 		}
 	}
+
+	return true;
 }
 
 void Object3D::InitBuffers()
